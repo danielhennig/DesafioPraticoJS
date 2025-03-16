@@ -49,7 +49,6 @@ console.log(somaArray([5, "a", 2])); // Erro: Valor inválido detectado
 
 ## Melhorias Futuras
 - Adicionar suporte para arrays vazios retornando `0`.
-- Incluir suporte para arrays aninhados (exemplo: `[[1, 2], [3, 4]]`).
 
 
 
