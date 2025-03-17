@@ -1,24 +1,59 @@
-const readline = require('readline');
+# Jogo Pedra, Papel e Tesoura - Análise do Código
 
+## Visão Geral
+Este é um simples jogo de **Pedra, Papel e Tesoura** desenvolvido em **Node.js**. Ele permite que o usuário jogue contra o computador de forma interativa no terminal, mantendo um placar atualizado a cada rodada.
+
+## Como Funciona?
+O jogo segue a seguinte lógica:
+
+1. O usuário escolhe entre `pedra`, `papel` ou `tesoura`.
+2. O computador escolhe uma opção aleatória.
+3. O vencedor é determinado com base nas regras do jogo.
+4. O placar é atualizado após cada rodada.
+5. O usuário pode continuar jogando ou digitar `sair` para encerrar.
+
+## Estrutura do Código
+
+### 1. Importação do Módulo `readline`
+O código usa o módulo `readline` para capturar a entrada do usuário:
+
+```javascript
+const readline = require('readline');
 const rl = readline.createInterface({
   input: process.stdin,
   output: process.stdout
 });
+```
 
-// Opções válidas
+### 2. Definição das Opções
+O jogo possui três opções válidas:
+
+```javascript
 const opcoes = ['pedra', 'papel', 'tesoura'];
+```
 
-// Variáveis para armazenar os pontos
+### 3. Variáveis de Pontuação
+O código mantém a contagem de pontos do usuário e do computador:
+
+```javascript
 let pontosUsuario = 0;
 let pontosComputador = 0;
+```
 
-// Função que define a escolha aleatória do computador
+### 4. Escolha do Computador
+A escolha do computador é gerada aleatoriamente:
+
+```javascript
 function escolhaComputador() {
   const indice = Math.floor(Math.random() * opcoes.length);
   return opcoes[indice];
 }
+```
 
-// Função que determina o vencedor da rodada
+### 5. Determinação do Vencedor
+O jogo segue as regras clássicas para determinar o vencedor:
+
+```javascript
 function determinarVencedor(jogadaUsuario, jogadaComputador) {
   if (jogadaUsuario === jogadaComputador) {
     return 'Empate';
@@ -34,13 +69,16 @@ function determinarVencedor(jogadaUsuario, jogadaComputador) {
     return 'Computador';
   }
 }
+```
 
-// Função que gerencia uma rodada do jogo e chama ela mesma para continuar o jogo
+### 6. Lógica do Jogo
+A função `jogar()` gerencia todo o fluxo do jogo, incluindo validação de entrada, exibição do placar e controle do loop:
+
+```javascript
 function jogar() {
   rl.question('Escolha pedra, papel ou tesoura (ou digite "sair" para encerrar): ', (resposta) => {
     const jogadaUsuario = resposta.trim().toLowerCase();
 
-    // Caso o usuário deseje sair do jogo
     if (jogadaUsuario === 'sair') {
       console.log('Jogo encerrado!');
       console.log(`Placar final - Você: ${pontosUsuario} | Computador: ${pontosComputador}`);
@@ -48,18 +86,15 @@ function jogar() {
       return;
     }
     
-    // Valida a opção escolhida
     if (!opcoes.includes(jogadaUsuario)) {
       console.log('Opção inválida. Tente novamente.');
       return jogar();
     }
     
-    // Escolha do computador e exibição das jogadas
     const jogadaComputador = escolhaComputador();
     console.log(`Você escolheu: ${jogadaUsuario}`);
     console.log(`O computador escolheu: ${jogadaComputador}`);
     
-    // Determina o vencedor da rodada
     const resultado = determinarVencedor(jogadaUsuario, jogadaComputador);
     
     if (resultado === 'Empate') {
@@ -72,13 +107,20 @@ function jogar() {
       pontosComputador++;
     }
     
-    // Exibe o placar atual
     console.log(`Placar atual: Você: ${pontosUsuario} | Computador: ${pontosComputador}`);
     console.log('------------------------');
     
-    // Chama a função novamente para outra rodada
     jogar();
   });
 }
+```
 
+### 7. Inicialização do Jogo
+O jogo é iniciado chamando a função principal:
+
+```javascript
 jogar();
+```
+
+
+
