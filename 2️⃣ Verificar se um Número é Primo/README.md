@@ -2,11 +2,11 @@
 
 Este repositório contém uma função em JavaScript para verificar se um número é primo.
 
-## 📌 Sobre a Função
+## Sobre a Função
 
 A função `Primo(n)` recebe um número inteiro como entrada e retorna `true` se ele for primo e `false` caso contrário. Além disso, se a entrada não for um número inteiro, a função retorna uma mensagem de erro.
 
-## 📝 Código
+## Código
 
 ```javascript
 function Primo(n) {
@@ -36,19 +36,19 @@ console.log(Primo(4));    // false
 console.log(Primo("abc")); // "Erro: valor inválido detectado. Informe um número inteiro."
 ```
 
-## 🚀 Como Utilizar
+## Como Utilizar
 
 1. Copie o código acima e cole em um arquivo JavaScript (`primo.js`).
 2. Execute o código em um ambiente Node.js ou diretamente no console do navegador.
 3. Modifique os valores passados à função `Primo(n)` para testar diferentes entradas.
 
-## 📊 Explicação Técnica
+## Explicação Técnica
 
 1. A função verifica se a entrada é um número inteiro válido.
 2. Números menores que 2 são automaticamente considerados não primos.
 3. Para otimizar a verificação, o loop percorre apenas até a raiz quadrada de `n`, pois se `n` for divisível por algum número maior que sua raiz quadrada, já teria sido detectado antes.
 
-## ✅ Exemplos de Testes
+## Exemplos de Testes
 
 Os dez primeiros números primos conhecidos são: `2, 3, 5, 7, 11, 13, 17, 19, 23, 29`.
 
