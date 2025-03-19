@@ -1,29 +1,37 @@
 const canvas = document.getElementById("game");
 const ctx = canvas.getContext("2d");
 
-// Tamanho da célula (grid)
+const scoreDisplay = document.getElementById("score");
+const restartButton = document.getElementById("restart");
+
 const grid = 20;
+let snake, dx, dy, food, game, score;
 
-// Inicializa a cobrinha (iniciando com 3 segmentos)
-let snake = [
-  { x: 200, y: 200 },
-  { x: 180, y: 200 },
-  { x: 160, y: 200 }
-];
+// Inicializa ou reinicia o jogo
+function initGame() {
+  snake = [
+    { x: 200, y: 200 },
+    { x: 180, y: 200 },
+    { x: 160, y: 200 }
+  ];
+  dx = grid;
+  dy = 0;
+  score = 0;
+  updateScore();
+  food = generateFood();
+  
+  // Reinicia o loop do jogo
+  if (game) clearInterval(game);
+  game = setInterval(updateGame, 100);
+  
+  // Oculta o botão de reiniciar
+  restartButton.style.display = "none";
+}
 
-// Direção inicial: movimentando para a direita
-let dx = grid;
-let dy = 0;
+initGame();
 
-// Cria a primeira comida
-let food = generateFood();
-
-// Intervalo de atualização do jogo (100ms)
-let game = setInterval(updateGame, 100);
-
-// Função que atualiza o estado do jogo a cada intervalo
+// Atualiza o estado do jogo a cada intervalo
 function updateGame() {
-  // Calcula a nova cabeça com base na direção atual
   const head = { x: snake[0].x + dx, y: snake[0].y + dy };
 
   // Verifica colisão com as paredes
@@ -41,14 +49,16 @@ function updateGame() {
   // Adiciona a nova cabeça na frente da cobrinha
   snake.unshift(head);
 
-  // Se a comida for comida, gera uma nova comida, senão remove o último segmento
+  // Se comer a comida, incrementa a pontuação e gera nova comida; senão, remove o último segmento
   if (head.x === food.x && head.y === food.y) {
+    score++;
+    updateScore();
     food = generateFood();
   } else {
     snake.pop();
   }
 
-  // Limpa o canvas e redesenha os elementos
+  // Limpa o canvas e redesenha a comida e a cobrinha
   ctx.clearRect(0, 0, canvas.width, canvas.height);
 
   // Desenha a comida
@@ -62,7 +72,12 @@ function updateGame() {
   });
 }
 
-// Função para gerar uma posição aleatória para a comida
+// Atualiza a exibição da pontuação
+function updateScore() {
+  scoreDisplay.textContent = `Pontuação: ${score}`;
+}
+
+// Gera uma posição aleatória para a comida que não colida com a cobrinha
 function generateFood() {
   let foodX, foodY;
   do {
@@ -72,10 +87,11 @@ function generateFood() {
   return { x: foodX, y: foodY };
 }
 
-// Função que finaliza o jogo
+// Função chamada quando o jogo termina
 function gameOver() {
   clearInterval(game);
   alert("Game Over!");
+  restartButton.style.display = "inline-block";
 }
 
 // Controla a direção da cobrinha via teclado
@@ -88,24 +104,20 @@ function changeDirection(event) {
   const goingRight = dx === grid;
   const goingLeft = dx === -grid;
 
-  // Seta para a esquerda ou tecla A
   if ((key === "ArrowLeft" || key.toLowerCase() === "a") && !goingRight) {
     dx = -grid;
     dy = 0;
-  }
-  // Seta para cima ou tecla W
-  else if ((key === "ArrowUp" || key.toLowerCase() === "w") && !goingDown) {
+  } else if ((key === "ArrowUp" || key.toLowerCase() === "w") && !goingDown) {
     dx = 0;
     dy = -grid;
-  }
-  // Seta para a direita ou tecla D
-  else if ((key === "ArrowRight" || key.toLowerCase() === "d") && !goingLeft) {
+  } else if ((key === "ArrowRight" || key.toLowerCase() === "d") && !goingLeft) {
     dx = grid;
     dy = 0;
-  }
-  // Seta para baixo ou tecla S
-  else if ((key === "ArrowDown" || key.toLowerCase() === "s") && !goingUp) {
+  } else if ((key === "ArrowDown" || key.toLowerCase() === "s") && !goingUp) {
     dx = 0;
     dy = grid;
   }
 }
+
+// Reinicia o jogo ao clicar no botão
+restartButton.addEventListener("click", initGame);
